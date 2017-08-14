@@ -54,13 +54,13 @@ if (reading == HIGH && previous == LOW && millis() - time > debounce) {
     if(message == "lights on")
     {//if data is available
       Serial.println(message); //show the data 
-      digitalWrite(RELAY1, HIGH); 
+      state=HIGH;
       message=""; //clear the data
     }
     if(message == "lights off")
     {
       Serial.println(message);
-      digitalWrite(RELAY1, LOW);
+      state=LOW;
       message="";
     }
    }
