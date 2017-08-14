@@ -23,9 +23,9 @@ pinMode(sensorPin, INPUT);
 
   void loop()
 {
-  int val = analogRead(sensorPin);
+  int val = analogRead(sensorPin);    //reads the value of the piezoelectric sensor
 
-if(val>sensorPin)
+if(val>threshold)
 {
   reading=HIGH;
 }
@@ -36,25 +36,25 @@ else
 
 if (reading == HIGH && previous == LOW && millis() - time > debounce) {
     if (state == HIGH)
-      state = LOW;
+      state = LOW;                // stores the state of the switch and accordingly changes its value
     else
       state = HIGH;
 
     time = millis();    
   }
 
-  previous=reading;
+  previous=reading;         //stores the previous reading
   
     while(Serial.available())
   {//while there is data available on the serial monitor
     message+=char(Serial.read());//store string from serial command
   }
-  if(!Serial.available())
+  if(!Serial.available())          //Bluetooth command lines to open the lights or switch them off
   {
     if(message == "lights on")
     {//if data is available
-      Serial.println(message); //show the data
-      digitalWrite(RELAY1, HIGH);
+      Serial.println(message); //show the data 
+      digitalWrite(RELAY1, HIGH); 
       message=""; //clear the data
     }
     if(message == "lights off")
@@ -63,8 +63,14 @@ if (reading == HIGH && previous == LOW && millis() - time > debounce) {
       digitalWrite(RELAY1, LOW);
       message="";
     }
+   }
 
-    
+  if (state== HIGH){              //Piezoelectric sensor to open the lights or switch them off, in case there is no BT device available
+    digitalWrite(RELAY1, HIGH);
+  }
+  else
+  {
+    digitalWrite(RELAY1, LOW);
   }
   
 }
