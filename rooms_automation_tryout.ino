@@ -5,8 +5,8 @@
 const int sensorPin=A1;
 const int threshold= 100;
 
-int state=HIGH;    //the current state of the OUTPUT pin
-int state2=HIGH;
+int state = HIGH;    //the current state of the OUTPUT pin
+int state2; 
 int reading;       // current reading drom the INPUT pin
 int previous=LOW;  //the previous reading from the INPUT pin
 
@@ -24,7 +24,7 @@ pinMode(RELAY2, OUTPUT);
 pinMode(sensorPin, INPUT);
 }
 
-  void loop()
+ void loop()
 {
   int val = analogRead(sensorPin);    //reads the value of the piezoelectric sensor
 
@@ -69,6 +69,7 @@ if (reading == HIGH && previous == LOW && millis() - time > debounce) {
     if (message == "door")
     {
       state2= HIGH;
+      Serial.println("The door opens");
     }
    }
 
@@ -79,10 +80,12 @@ if (reading == HIGH && previous == LOW && millis() - time > debounce) {
   {
     digitalWrite(RELAY1, LOW);
   }
+  
   if (state2 == HIGH)
   {
     digitalWrite(RELAY2, HIGH);
     state2=LOW;
+    Serial.println("The door is about to close in 4 seconds!");
     delay(4000);
   }
   else{
